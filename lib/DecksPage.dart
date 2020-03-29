@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DecksPage extends StatefulWidget{
+
   @override
   State<StatefulWidget> createState() => DecksPageState();
 
 }
 class DecksPageState extends State<DecksPage>{
-  List<Widget> decks=List<Widget>();
+  List<Widget> decks=List.generate(1, (index) => deckWidget(index));
   @override
   Widget build(BuildContext context) {
 
@@ -18,7 +19,11 @@ class DecksPageState extends State<DecksPage>{
             child:Icon(Icons.add),
             onPressed: (){
               setState(() {
-                decks.add(deckWidget('big titty'));
+
+                var d=decks;
+                d.add(deckWidget(69));
+                decks=d;
+                print(decks.length);
 
               });
             },
@@ -35,11 +40,11 @@ class DecksPageState extends State<DecksPage>{
         // horizontal, this produces 2 rows.
         crossAxisCount: 5,
         // Generate 100 widgets that display their index in the List.
-        children: decks
+        children: List.generate(decks.length, (index) => decks[index])
       )
     );
   }
-  Widget deckWidget(String name){
+  static Widget deckWidget(int name){
     return MaterialButton(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
