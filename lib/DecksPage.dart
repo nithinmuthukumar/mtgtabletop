@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mtgtabletop/DeckBuilder.dart';
 
 class DecksPage extends StatefulWidget{
 
@@ -8,7 +9,12 @@ class DecksPage extends StatefulWidget{
 
 }
 class DecksPageState extends State<DecksPage>{
-  List<Widget> decks=List.generate(1, (index) => deckWidget(index));
+  List<Widget> decks;
+  @override
+  void initState() {
+    decks=List.generate(1, (index) => deckWidget(index));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -44,7 +50,7 @@ class DecksPageState extends State<DecksPage>{
       )
     );
   }
-  static Widget deckWidget(int name){
+  Widget deckWidget(int name){
     return MaterialButton(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -54,8 +60,13 @@ class DecksPageState extends State<DecksPage>{
             ))
           ],
         ),
-        shape: Border.all(color: Colors.blue)
+        shape: Border.all(color: Colors.blue),
+      onPressed: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DeckBuilder()),
+        );
+      },
     );
   }
-
 }

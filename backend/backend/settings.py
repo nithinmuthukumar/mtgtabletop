@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 ]
 
-AUTH_USER_MODEL = 'bookhub.HubUser'
+AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

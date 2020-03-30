@@ -5,24 +5,25 @@ from django.db import models
 
 
 
+class Card(models.Model):
+    name = models.CharField(max_length=200)
+    version = models.CharField(max_length=15)
 
-
-
-
-class Textbook(models.Model):
-    name=models.CharField(max_length=40)
-    file=models.FileField(upload_to='', null=True, blank=True)
-    subject=models.CharField(max_length=40)
-    grade=models.IntegerField()
+class Deck(models.Model):
+    name = models.CharField(max_length=30)
+    cards = models.ForeignKey(Card,on_delete=models.CASCADE)
     class Meta:
-        ordering = ['grade']
-    def __str__(self):
-        return self.name
+        ordering = ['decks']
 
-class HubUser(AbstractUser):
-    models.ManyToManyField(Textbook, blank=True)
-    models.ManyToManyField(Textbook, blank=True)
+class Player():
+
+    decks=models.ManyToManyField(Deck, blank=True)
     email = models.EmailField()
+    username = models.CharField(max_length=100)
+    played=models.IntegerField()
+
+
+
 
 
 
