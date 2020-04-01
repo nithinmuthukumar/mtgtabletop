@@ -1,6 +1,6 @@
 {
-    "name": "mtgtabletop",
-    "short_name": "mtgtabletop",
+    "name": "mtap",
+    "short_name": "mtap",
     "start_url": ".",
     "display": "minimal-ui",
     "background_color": "#0175C2",
