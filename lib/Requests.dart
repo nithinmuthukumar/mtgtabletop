@@ -49,6 +49,7 @@ class User {
 }
 class GlobalContainer{
   static HashMap<String, CardData> cards=new HashMap<String,CardData>();
+  static User user;
 }
 String ip = "http://127.0.0.1:8000/";
 Future<User> login(String username,String password) async {

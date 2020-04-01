@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Requests.dart';
+import 'HomePage.dart';
 
 class LoadPage extends StatefulWidget{
   @override
@@ -43,12 +44,42 @@ class LoadState extends State<LoadPage>{
           print(GlobalContainer.cards.length);
           return Scaffold(
             body: Center(
-              child: Text('$GlobalContainer.cards.length'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Login',
+                      border: OutlineInputBorder(),
+
+                    ),
+
+                  ),
+                  TextField(
+                    controller: ,
+
+                  ),
+                  FloatingActionButton(
+                    child: Text("Login"),
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    },
+
+                  )
+
+
+                ],
+              )
             ),
           );
 
         }else{
-          return CircularProgressIndicator();
+          return CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          );
         }
 
 

@@ -23,7 +23,12 @@ class MtgApp extends StatelessWidget {
       title: 'MTG Table Top',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        canvasColor: Colors.black,
+        canvasColor: Colors.blueGrey,
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
+            color:Colors.white
+          )
+        )
 
 
       ),
