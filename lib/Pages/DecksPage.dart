@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mtap/DeckBuilder/DeckBuilder.dart';
+import 'package:mtap/Requests.dart';
 
 
 class DecksPage extends StatefulWidget{
@@ -66,7 +67,7 @@ class DecksPageState extends State<DecksPage>{
       onPressed: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DeckBuilder()),
+          MaterialPageRoute(builder: (context) => DeckBuilder(deckIndex:0)),
         );
       },
     );

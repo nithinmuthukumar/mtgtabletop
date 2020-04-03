@@ -21,8 +21,8 @@ class CardData {
 }
 
 class DeckData {
-  final String name;
-  final List<CardData> cards;
+  String name;
+  List<CardData> cards;
 
   DeckData({this.name,this.cards});
 
@@ -34,8 +34,8 @@ class DeckData {
   }
 }
 class User {
-  final String name;
-  final List<DeckData> decks;
+  String name;
+  List<DeckData> decks;
 
   User({this.name,this.decks});
 
