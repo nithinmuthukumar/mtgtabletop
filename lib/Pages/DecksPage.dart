@@ -26,11 +26,10 @@ class DecksPageState extends State<DecksPage>{
           MaterialButton(
             child:Icon(Icons.add),
             onPressed: (){
+              GlobalContainer.user.decks.add(new DeckData(name:"deck af",cards:[]));
               setState(() {
-
                 var d=decks;
                 d.add(deckWidget(69));
-
                 decks=d;
                 print(decks.length);
 

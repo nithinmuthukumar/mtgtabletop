@@ -40,6 +40,7 @@ class DeckBuilderState extends State<DeckBuilder>{
   Widget deckDataEntry(){
     return AlertDialog(
       content: TextField(
+        maxLines: null,
         controller: deckListEntry,
 
 
@@ -49,7 +50,8 @@ class DeckBuilderState extends State<DeckBuilder>{
         FlatButton(
           child: Text("Done"),
           onPressed: (){
-            data.cards=[for(String name in deckListEntry.text.split('\n')) GlobalContainer.cards[name]];
+            data.cards=[for(String name in deckListEntry.text.trim().split('\n')) if(GlobalContainer.cards[name.trim()]!=null) GlobalContainer.cards[name.trim()]];
+            print(GlobalContainer.user.decks);
             Navigator.of(context).pop();
           },
         )
@@ -79,21 +81,26 @@ class DeckBuilderState extends State<DeckBuilder>{
 
       body: Row(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              TextField(
-                onChanged: setResults,
+          Expanded(
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  onChanged: setResults,
 
-              ),
-              Column(
-                children: searchResults,
-              )
-            ],
+                ),
+                Column(
+                  children: searchResults,
+                )
+              ],
+            ),
           ),
-
-          ListView(
-            children: List.generate(data.cards.length, (index) => CardItem(data:data.cards[index]))
+          Expanded(
+            flex: 1,
+            child: ListView(
+                children: List.generate(data.cards.length, (index) => CardItem(data:data.cards[index]))
+            )
           )
+
         ],
       ),
 

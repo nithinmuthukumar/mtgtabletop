@@ -64,7 +64,7 @@ class LoadState extends State<LoadPage>{
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => HomePage(title:"Mtgback")),
                       );
                     },
 

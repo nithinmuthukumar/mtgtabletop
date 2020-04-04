@@ -11,6 +11,10 @@ class CardData {
   final dynamic imageURI;
 
 
+  @override
+  String toString() {
+    return name;
+  }
 
   CardData(this.name,this.imageURI);
 
@@ -49,7 +53,7 @@ class User {
 }
 class GlobalContainer{
   static HashMap<String, CardData> cards=new HashMap<String,CardData>();
-  static User user;
+  static User user=new User(name: "john",decks: []);
 }
 String ip = "http://127.0.0.1:8000/";
 Future<User> login(String username,String password) async {
