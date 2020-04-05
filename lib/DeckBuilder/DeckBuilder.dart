@@ -2,21 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Requests.dart';
-class CardItem extends StatefulWidget{
+
+class CardItem extends StatelessWidget{
   final CardData data;
+  CardItem({this.data});
 
-  const CardItem({Key key, this.data}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return CardItemState();
-  }
-}
-class CardItemState extends State<CardItem>{
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      child: Text(widget.data.name),
+        child: Text(data.name),
+        onPressed: null
     );
   }
 }

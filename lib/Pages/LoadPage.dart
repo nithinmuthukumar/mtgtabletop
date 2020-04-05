@@ -17,6 +17,7 @@ class LoadState extends State<LoadPage>{
   Future data;
   @override
   void initState() {
+    
     loadCardData();
 
 

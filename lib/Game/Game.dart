@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mtap/Game/Card.dart';
 import 'package:mtap/Requests.dart';
 
@@ -9,12 +10,29 @@ class Game extends StatefulWidget{
   }
 
 }
-class GameState extends State<Game>{
+class GameState extends State<Game> {
+  DeckData data;
+  List<Widget> fieldCards;
+
+
+  @override
+  void initState() {
+    super.initState();
+    data=GlobalContainer.user.decks[0];
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: List.generate(2, (index) => MagicCard(initPos:Offset(4,4),data: GlobalContainer.user.decks[0].cards[index])),
+        children:fieldCards+<Widget>[
+          Positioned(
+            child: Align(
+              alignment: FractionalOffset.bottomRight,
+              child: null,
+            ),
+          )
+        ]
     );
   }
-
 }

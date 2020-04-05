@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mtap/Requests.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 class MagicCard extends StatefulWidget{
   final CardData data;
   final Offset initPos;
@@ -16,7 +16,7 @@ class MagicCard extends StatefulWidget{
 }
 class MagicCardState extends State<MagicCard>{
 
-  Offset position = Offset(200,200);
+  Offset position = Offset(50,50);
 
 
   @override
@@ -36,14 +36,24 @@ class MagicCardState extends State<MagicCard>{
       left: position.dx,
       top: position.dy,
       child: Draggable(
+
         data: widget.data,
-        child: Image.network(widget.data.imageURI['png'],scale:5),
+        child: CachedNetworkImage(
+          placeholder: (context, url) => CircularProgressIndicator(),
+          imageUrl: widget.data.imageURI['png'],
+          width: 100,
+        ),
         onDraggableCanceled: (velocity, offset){
           setState(() {
             position=offset;
           });
         },
-        feedback:  Image.network(widget.data.imageURI['png']),
+        feedback:  CachedNetworkImage(
+          placeholder: (context, url) => CircularProgressIndicator(),
+          imageUrl: widget.data.imageURI['png'],
+          width: 100,
+        )
+
       )
     );
 

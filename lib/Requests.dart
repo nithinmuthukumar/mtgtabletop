@@ -53,29 +53,28 @@ class User {
 }
 class GlobalContainer{
   static HashMap<String, CardData> cards=new HashMap<String,CardData>();
-  static User user=new User(name: "john",decks: []);
+  static User user;
+  static String authtoken;
 }
 String ip = "http://127.0.0.1:8000/";
-Future<User> login(String username,String password) async {
-  final response = await http.get("http://127.0.0.1:8000/players/$username/$password");
-  if(response.statusCode==200){
-    return User.fromJson(json.decode(response.body));
-  }else{
-    throw Exception('Failed to load post');
 
-  }
-  // If the call to the server was successful, parse the JSON.
-
-
-
-}
-
-Future<int> register(String username,String password,String email) async{
+Future<int> login(String email,String password) async{
   Map<String, String> headers = {"Content-type": "application/json"};
-  String body = jsonEncode({"username":username,"password":password,'email':email});
-  final response = await http.post(ip+"bookhub/users/",headers:headers,body: body);
-  print(response.body);
+  String body = jsonEncode({"password":password,'email':email});
+  final response = await http.post(ip+"api/login/",headers:headers,body: body);
+  GlobalContainer.user=User.fromJson(jsonDecode(response.body));
+
   return response.statusCode;
+}
+Future<int> getDecks() async{
+  Map<String, String> headers = {"Content-type": "application/json"};
+  String body = jsonEncode({'username':GlobalContainer.user.name});
+  final response = await http.post(ip+"api/login/",headers:headers,body: body);
+  GlobalContainer.user.decks=[for(var deck in jsonDecode(response.body)) DeckData.fromJson(deck)];
+  return response.statusCode;
+
+
+
 }
 
 
