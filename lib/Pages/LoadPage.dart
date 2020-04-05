@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../Requests.dart';
@@ -15,22 +16,31 @@ class LoadPage extends StatefulWidget{
 }
 class LoadState extends State<LoadPage>{
   Future data;
+  TextEditingController passwordController=TextEditingController();
+  TextEditingController emailController=TextEditingController();
   @override
   void initState() {
-    
-    loadCardData();
+
+    data = DefaultAssetBundle.of(context).loadString('assets/scryfall-default-cards.json').then((value) async{
+      GlobalContainer.cards= await compute(parseCardData,value);
+
+    });
+
+
 
 
   }
-  void loadCardData() async{
-    data = DefaultAssetBundle.of(context).loadString('assets/scryfall-default-cards.json');
-    for (var cardData in json.decode(await data)) {
+  HashMap<String,CardData> parseCardData(String str) {
+    HashMap<String,CardData> cards;
+
+    for (var cardData in json.decode(str)) {
       if(cardData['object']!='card') continue;
 
       var card = CardData.fromJson(cardData);
-      GlobalContainer.cards[card.name] = card;
+      cards[card.name] = card;
 
     }
+    return cards;
   }
 
   @override
@@ -42,7 +52,7 @@ class LoadState extends State<LoadPage>{
           print(snapshot.error);
         }
         if(snapshot.hasData){
-          print(GlobalContainer.cards.length);
+
           return Scaffold(
             body: Center(
               child: Column(
@@ -50,24 +60,31 @@ class LoadState extends State<LoadPage>{
                 children: <Widget>[
                   TextField(
                     decoration: InputDecoration(
-                      hintText: 'Login',
+                      hintText: 'email',
                       border: OutlineInputBorder(),
 
+
                     ),
+                    controller: emailController,
 
                   ),
                   TextField(
+                    decoration: InputDecoration(
+                      hintText: 'password',
+                      border: OutlineInputBorder()
+                    ),
+                    controller: passwordController,
+
 
 
                   ),
                   FloatingActionButton(
                     child: Text("Login"),
                     onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage(title:"Mtgback")),
-                      );
-                    },
+                      login(emailController.text, passwordController.text).then((value) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(title:"Mtgback")));
+                      });
+                      },
 
                   )
 

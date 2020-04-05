@@ -62,7 +62,10 @@ Future<int> login(String email,String password) async{
   Map<String, String> headers = {"Content-type": "application/json"};
   String body = jsonEncode({"password":password,'email':email});
   final response = await http.post(ip+"api/login/",headers:headers,body: body);
-  GlobalContainer.user=User.fromJson(jsonDecode(response.body));
+  var data=jsonDecode(response.body);
+  GlobalContainer.user=User.fromJson(data['user']);
+  GlobalContainer.authtoken=data['token'];
+
 
   return response.statusCode;
 }
