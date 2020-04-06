@@ -14,7 +14,7 @@ class DecksPageState extends State<DecksPage>{
   List<Widget> decks;
   @override
   void initState() {
-    decks=List.generate(1, (index) => deckWidget(index));
+    decks=List.generate(GlobalContainer.user.decks.length, (index) => deckWidget(index));
     super.initState();
   }
   @override
@@ -52,12 +52,12 @@ class DecksPageState extends State<DecksPage>{
       )
     );
   }
-  Widget deckWidget(int name){
+  Widget deckWidget(int index){
     return MaterialButton(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Deck $name',style:TextStyle(
+            Text('Deck ${GlobalContainer.user.decks[index].name}',style:TextStyle(
                 color: Colors.white
             ))
           ],

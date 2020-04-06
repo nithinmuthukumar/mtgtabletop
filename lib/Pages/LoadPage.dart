@@ -7,7 +7,19 @@ import 'package:flutter/material.dart';
 
 import '../Requests.dart';
 import 'HomePage.dart';
+HashMap<String,CardData> parseCardData(String str) {
+  HashMap<String,CardData> cards=new HashMap();
 
+  for (var cardData in json.decode(str)) {
+    if(cardData['object']!='card') continue;
+
+    var card = CardData.fromJson(cardData);
+    cards[card.name] = card;
+
+  }
+  print("done");
+  return cards;
+}
 class LoadPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() =>LoadState();
@@ -18,29 +30,24 @@ class LoadState extends State<LoadPage>{
   Future data;
   TextEditingController passwordController=TextEditingController();
   TextEditingController emailController=TextEditingController();
+
+  bool loaded = false;
   @override
   void initState() {
 
-    data = DefaultAssetBundle.of(context).loadString('assets/scryfall-default-cards.json').then((value) async{
-      GlobalContainer.cards= await compute(parseCardData,value);
-    });
+    data = DefaultAssetBundle.of(context).loadString('assets/scryfall-default-cards.json');
+
+
 
 
 
 
   }
-  HashMap<String,CardData> parseCardData(String str) {
-    HashMap<String,CardData> cards;
+  void setCardData(String s) async {
+    GlobalContainer.cards = await compute(parseCardData,s);
 
-    for (var cardData in json.decode(str)) {
-      if(cardData['object']!='card') continue;
-
-      var card = CardData.fromJson(cardData);
-      cards[card.name] = card;
-
-    }
-    return cards;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +58,11 @@ class LoadState extends State<LoadPage>{
           print(snapshot.error);
         }
         if(snapshot.hasData){
+          if(!loaded){
+            setCardData(snapshot.data);
+            loaded=true;
+
+          }
 
           return Scaffold(
             body: Center(

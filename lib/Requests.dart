@@ -43,16 +43,16 @@ class User {
 
   User({this.name,this.decks});
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic> json, List<dynamic> decks) {
     return User(
         name:json['name'],
-        decks: [for(var t in json['decks']) DeckData.fromJson(t)]
+        decks: [for(var t in decks) DeckData.fromJson(t)]
     );
   }
 
 }
 class GlobalContainer{
-  static HashMap<String, CardData> cards=new HashMap<String,CardData>();
+  static HashMap<String, CardData> cards;
   static User user;
   static String authtoken;
 }
@@ -63,13 +63,14 @@ Future<int> login(String email,String password) async{
   String body = jsonEncode({"password":password,'email':email});
   final response = await http.post(ip+"api/login/",headers:headers,body: body);
   var data=jsonDecode(response.body);
-  GlobalContainer.user=User.fromJson(data['user']);
+  print(data);
+  GlobalContainer.user=User.fromJson(data['user'],data['decks']);
   GlobalContainer.authtoken=data['token'];
 
 
   return response.statusCode;
 }
-Future<int> getDecks() async{
+Future<int> getPublicDecks() async{
   Map<String, String> headers = {"Content-type": "application/json"};
   String body = jsonEncode({'username':GlobalContainer.user.name});
   final response = await http.post(ip+"api/decks/",headers:headers,body: body);
@@ -78,6 +79,10 @@ Future<int> getDecks() async{
 
 
 
+}
+Future<int> updateDeck(DeckData data) async{
+  Map<String, String> headers = {"Content-type": "application/json","Authorization": "Token ${GlobalContainer.authtoken}"};
+  
 }
 
 
