@@ -23,7 +23,6 @@ class LoadState extends State<LoadPage>{
 
     data = DefaultAssetBundle.of(context).loadString('assets/scryfall-default-cards.json').then((value) async{
       GlobalContainer.cards= await compute(parseCardData,value);
-
     });
 
 

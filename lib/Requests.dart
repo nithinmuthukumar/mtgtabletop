@@ -72,7 +72,7 @@ Future<int> login(String email,String password) async{
 Future<int> getDecks() async{
   Map<String, String> headers = {"Content-type": "application/json"};
   String body = jsonEncode({'username':GlobalContainer.user.name});
-  final response = await http.post(ip+"api/login/",headers:headers,body: body);
+  final response = await http.post(ip+"api/decks/",headers:headers,body: body);
   GlobalContainer.user.decks=[for(var deck in jsonDecode(response.body)) DeckData.fromJson(deck)];
   return response.statusCode;
 
