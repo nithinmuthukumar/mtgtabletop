@@ -45,7 +45,9 @@ class DeckBuilderState extends State<DeckBuilder>{
         FlatButton(
           child: Text("Done"),
           onPressed: (){
-            data.cards=[for(String name in deckListEntry.text.trim().split('\n')) if(GlobalContainer.cards[name.trim()]!=null) GlobalContainer.cards[name.trim()]];
+            setState((){
+              data.cards=[for(String name in deckListEntry.text.trim().split('\n')) if(GlobalContainer.cards[name.trim()]!=null) GlobalContainer.cards[name.trim()].cloneWithDeckId(data.id)];
+            });
             print(GlobalContainer.user.decks);
             Navigator.of(context).pop();
           },
@@ -69,6 +71,12 @@ class DeckBuilderState extends State<DeckBuilder>{
               showDialog(context: context,
                   builder: (BuildContext context)=> deckDataEntry()
               );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: (){
+              updateDeck(data);
             },
           )
         ]

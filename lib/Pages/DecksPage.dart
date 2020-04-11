@@ -66,7 +66,7 @@ class DecksPageState extends State<DecksPage>{
       onPressed: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DeckBuilder(deckIndex:0)),
+          MaterialPageRoute(builder: (context) => DeckBuilder(deckIndex:index)),
         );
       },
     );
