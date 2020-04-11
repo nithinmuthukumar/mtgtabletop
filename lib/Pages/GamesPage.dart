@@ -23,14 +23,56 @@ class GamesPage extends StatefulWidget{
 
 }
 class GamesPageState extends State<GamesPage>{
+  TextEditingController gameName=TextEditingController();
+  bool gameCreateDisabled=false;
+  Widget createGameWidget(){
+    return AlertDialog(
+      content: TextField(
+        controller: gameName,
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
+
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text(
+            "Create",
+
+          ),
+          onPressed: (){
+            setState(() {
+              var game = GameData(name: gameName.text,players: [],size: 6);
+              createGame(game);
+
+            });
+            Navigator.of(context).pop();
+
+          },
+
+        )
 
       ],
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(),
 
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              "Create Game"
+            ),
+            onPressed: (){
+              showDialog(context: context,
+                  builder: (BuildContext context)=> createGameWidget()
+              );
+            },
+          )
+        ],
+
+      ),
     );
   }
 

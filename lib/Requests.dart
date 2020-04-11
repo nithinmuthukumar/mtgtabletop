@@ -39,6 +39,23 @@ class CardData{
   }
 
 }
+class GameData{
+  String name;
+  List<String> players;
+  int size;
+
+  GameData({this.name,this.players,this.size});
+
+  factory GameData.fromJson(Map<String, dynamic> json) {
+    return GameData(
+      name:json['name'],
+      players: json['players'],
+      size: json['size']
+
+    );
+  }
+
+}
 
 class DeckData {
   String name;
@@ -123,6 +140,15 @@ Future<int> updateDeck(DeckData data) async{
   final response = await http.put(ip+"api/decks/${data.id}/",headers: headers,body: body);
   print(response.statusCode);
   print(response.body);
+  return response.statusCode;
+
+}
+Future<int> createGame(GameData data) async {
+  Map<String, String> headers = {"Content-type": "application/json",HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"};
+  String body = jsonEncode(data);
+
+  final response = await http.post(ip+"api/games/",headers: headers,body: body);
+
   return response.statusCode;
 
 

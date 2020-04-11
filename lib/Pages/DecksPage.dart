@@ -37,10 +37,8 @@ class DecksPageState extends State<DecksPage>{
                 var d=decks;
                 d.add(deckWidget(GlobalContainer.user.decks.length-1));
                 decks=d;
-
-                Navigator.of(context).pop();
-
               });
+              Navigator.of(context).pop();
 
 
             });
