@@ -25,7 +25,7 @@ class DeckBuilder extends StatefulWidget{
 }
 class DeckBuilderState extends State<DeckBuilder>{
   DeckData data;
-  List<CardItem> searchResults=new List();
+  List<CardData> searchResults=new List();
   TextEditingController deckListEntry=TextEditingController();
 
   @override
@@ -85,18 +85,20 @@ class DeckBuilderState extends State<DeckBuilder>{
       body: Row(
         children: <Widget>[
           Expanded(
+            //search bar
             child: Column(
               children: <Widget>[
                 TextField(
                   onChanged: setResults,
 
                 ),
-                Column(
-                  children: searchResults,
+                ListView(
+                    children: List.generate(searchResults.length, (index) => CardItem(data:searchResults[index]))
                 )
               ],
             ),
           ),
+          //deck List
           Expanded(
             flex: 1,
             child: ListView(
@@ -112,7 +114,7 @@ class DeckBuilderState extends State<DeckBuilder>{
   }
   void setResults(text){
     setState(() {
-      searchResults=[for(var value in GlobalContainer.cards.values) if (value.name.contains(text)) CardItem(data:value)];
+      searchResults=[for(var value in GlobalContainer.cards.values) if (value.name.contains(text)) value].getRange(0, 10);
 
     });
   }

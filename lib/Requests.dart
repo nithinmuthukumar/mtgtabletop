@@ -107,6 +107,14 @@ Future<int> getPublicDecks() async{
 
 
 }
+Future<int> createDeck(DeckData data) async{
+  Map<String, String> headers = {"Content-type": "application/json",HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"};
+  String body = jsonEncode(data);
+  final response = await http.post(ip+"api/decks/",headers: headers,body: body);
+  print(response.body);
+  return response.statusCode;
+
+}
 Future<int> updateDeck(DeckData data) async{
   Map<String, String> headers = {"Content-type": "application/json",HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"};
   String body = jsonEncode(data);

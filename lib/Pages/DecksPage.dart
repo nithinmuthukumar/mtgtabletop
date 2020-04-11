@@ -12,10 +12,46 @@ class DecksPage extends StatefulWidget{
 }
 class DecksPageState extends State<DecksPage>{
   List<Widget> decks;
+  TextEditingController nameController=TextEditingController();
   @override
   void initState() {
     decks=List.generate(GlobalContainer.user.decks.length, (index) => deckWidget(index));
     super.initState();
+  }
+  Widget deckCreateWidget(){
+    return AlertDialog(
+      content: TextField(
+        controller: nameController,
+      ),
+      elevation: 30,
+      actions: <Widget>[
+        FlatButton(
+          child: Text(
+            "Create"
+          ),
+          onPressed: (){
+            var newDeck=DeckData(name:nameController.text,cards:[]);
+            createDeck(newDeck).then((value){
+              GlobalContainer.user.decks.add(newDeck);
+              setState(() {
+                var d=decks;
+                d.add(deckWidget(GlobalContainer.user.decks.length-1));
+                decks=d;
+
+                Navigator.of(context).pop();
+
+              });
+
+
+            });
+
+
+
+          },
+        )
+      ],
+    );
+
   }
   @override
   Widget build(BuildContext context) {
@@ -26,14 +62,9 @@ class DecksPageState extends State<DecksPage>{
           MaterialButton(
             child:Icon(Icons.add),
             onPressed: (){
-              GlobalContainer.user.decks.add(new DeckData(name:"deck af",cards:[]));
-              setState(() {
-                var d=decks;
-                d.add(deckWidget(69));
-                decks=d;
-                print(decks.length);
-
-              });
+              showDialog(context: context,
+                  builder: (BuildContext context)=> deckCreateWidget()
+              );
             },
             color: Colors.blueGrey,
             elevation: 8,
