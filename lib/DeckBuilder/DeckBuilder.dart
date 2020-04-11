@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -92,9 +94,14 @@ class DeckBuilderState extends State<DeckBuilder>{
                   onChanged: setResults,
 
                 ),
-                ListView(
-                    children: List.generate(searchResults.length, (index) => CardItem(data:searchResults[index]))
+                Expanded(
+                  flex: 1,
+                  child: ListView(
+                      children: List.generate(min(20,searchResults.length), (index) => CardItem(data:searchResults[index]))
+                  )
+
                 )
+
               ],
             ),
           ),
@@ -113,8 +120,15 @@ class DeckBuilderState extends State<DeckBuilder>{
     );
   }
   void setResults(text){
+    print(true);
+
     setState(() {
-      searchResults=[for(var value in GlobalContainer.cards.values) if (value.name.contains(text)) value].getRange(0, 10);
+      if(text=="") {
+        searchResults=[];
+        return;
+      }
+      searchResults=[for(var value in GlobalContainer.cards.values) if (value.name.toLowerCase().contains(text.toLowerCase())) value];
+      print(searchResults);
 
     });
   }

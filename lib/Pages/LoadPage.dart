@@ -93,6 +93,7 @@ class LoadState extends State<LoadPage>{
                     child: Text("Login"),
                     onPressed: (){
                       login(emailController.text, passwordController.text).then((value) {
+
                             Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(title:"Mtgback")));
                       });
                       },

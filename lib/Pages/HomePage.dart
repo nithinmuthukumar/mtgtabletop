@@ -39,6 +39,7 @@ class _MyHomePageState extends State<HomePage> with SingleTickerProviderStateMix
 
     return Scaffold(
       appBar: AppBar(
+        leading:Container(),
         centerTitle: false,
         backgroundColor: Color(0x409966ff),
         title: Text(
