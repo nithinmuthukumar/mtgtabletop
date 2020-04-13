@@ -69,7 +69,7 @@ void createGame(GameData data) async {
   
 }
 void joinGame(GameData data) async {
-  GlobalContainer.channel.sink.add('{join:${data.name}')
+  GlobalContainer.channel.sink.add('{join:${data.name}');
 }
 
 

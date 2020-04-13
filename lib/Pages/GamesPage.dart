@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mtap/Game/Card.dart';
+import 'package:mtap/Game/Game.dart';
 
 import '../ObjectData.dart';
 import '../Requests.dart';
@@ -68,6 +69,7 @@ class GamesPageState extends State<GamesPage>{
               "Create Game"
             ),
             onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Game()));
               showDialog(context: context,
                   builder: (BuildContext context)=> createGameWidget()
               );
@@ -76,18 +78,18 @@ class GamesPageState extends State<GamesPage>{
         ],
 
       ),
-      body: StreamBuilder(
-        stream: GlobalContainer.channel.stream,
-        builder: (context, snapshot) {
-          if(snapshot.hasData){
-            var games = jsonDecode(snapshot.data);
-            return ListView(
-              children: [for(GameData game in games) GameItem()],
-            );
-          }
-          return CircularProgressIndicator();
-        },
-      ),
+//      body: StreamBuilder(
+//        stream: GlobalContainer.channel.stream,
+//        builder: (context, snapshot) {
+//          if(snapshot.hasData){
+//            var games = jsonDecode(snapshot.data);
+//            return ListView(
+//              children: [for(GameData game in games) GameItem()],
+//            );
+//          }
+//          return CircularProgressIndicator();
+//        },
+//      ),
     );
   }
 

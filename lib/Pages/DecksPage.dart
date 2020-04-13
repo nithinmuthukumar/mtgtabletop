@@ -16,8 +16,16 @@ class DecksPageState extends State<DecksPage>{
   List<Widget> decks;
   TextEditingController nameController=TextEditingController();
   @override
+  Function createChangePageFunc(int index){
+    return (){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DeckBuilder(deckIndex:index)),
+      );
+    };
+  }
   void initState() {
-    decks=List.generate(GlobalContainer.user.decks.length, (index) => deckWidget(index));
+    decks=List.generate(GlobalContainer.user.decks.length, (index) => DeckIconWidget(index,createChangePageFunc(index)));
     super.initState();
   }
   Widget deckCreateWidget(){
@@ -37,7 +45,8 @@ class DecksPageState extends State<DecksPage>{
               GlobalContainer.user.decks.add(newDeck);
               setState(() {
                 var d=decks;
-                d.add(deckWidget(GlobalContainer.user.decks.length-1));
+                var index = GlobalContainer.user.decks.length-1;
+                d.add(DeckIconWidget(index,createChangePageFunc(index)));
                 decks=d;
               });
               Navigator.of(context).pop();
@@ -83,23 +92,28 @@ class DecksPageState extends State<DecksPage>{
       )
     );
   }
-  Widget deckWidget(int index){
+
+}
+class DeckIconWidget extends StatelessWidget{
+  final int index;
+  final Function func;
+  DeckIconWidget(this.index,this.func);
+
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialButton(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Deck ${GlobalContainer.user.decks[index].name}',style:TextStyle(
-                color: Colors.white
-            ))
-          ],
-        ),
-        shape: Border.all(color: Colors.blue),
-      onPressed: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DeckBuilder(deckIndex:index)),
-        );
-      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('Deck ${GlobalContainer.user.decks[index].name}',style:TextStyle(
+              color: Colors.white
+          ))
+        ],
+      ),
+      shape: Border.all(color: Colors.blue),
+      onPressed: func
     );
+
   }
 }
