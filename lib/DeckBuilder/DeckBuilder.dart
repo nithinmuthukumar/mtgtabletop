@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../ObjectData.dart';
 import '../Requests.dart';
 
 class CardItem extends StatelessWidget{

@@ -5,98 +5,23 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+
+import 'ObjectData.dart';
 //final HashMap<String,CardData> cards= loadCards();
-
-class CardData{
-  final String name;
-  final dynamic imageURI;
-  int deckId;
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 
-  @override
-  String toString() {
-    return name;
-  }
 
-  CardData(this.name,this.imageURI,this.deckId);
 
-  factory CardData.fromJson(var json) {
 
-    return CardData(json['name'],json['image_uris'],-1);
-  }
-  factory CardData.fromDeck(var json,int deckId) {
-
-    return CardData(json['name'],GlobalContainer.cards[json['name']],deckId);
-  }
-  Map toJson() => {
-    'name': name,
-    'deck': deckId
-  };
-
-  @override
-  CardData cloneWithDeckId(int deckId) {
-    return CardData(this.name,this.imageURI,deckId);
-  }
-
-}
-class GameData{
-  String name;
-  List<String> players;
-  int size;
-
-  GameData({this.name,this.players,this.size});
-
-  factory GameData.fromJson(Map<String, dynamic> json) {
-    return GameData(
-      name:json['name'],
-      players: json['players'],
-      size: json['size']
-
-    );
-  }
-
-}
-
-class DeckData {
-  String name;
-  List<CardData> cards;
-  int id;
-
-  DeckData({this.name,this.cards,this.id});
-
-  factory DeckData.fromJson(Map<String, dynamic> json) {
-
-    return DeckData(
-        name:json['name'],
-        id: json['id'],
-        cards: [for(var t in json['cards']) CardData.fromDeck(t,json['id'])]
-    );
-  }
-  Map toJson() => {
-    'name': name,
-    'cards': cards
-  };
-}
-class User {
-  String name;
-  int id;
-  List<DeckData> decks;
-
-  User({this.name,this.decks,this.id});
-
-  factory User.fromJson(Map<String, dynamic> json, List<dynamic> decks) {
-    return User(
-        name:json['name'],
-        id: json['id'],
-        decks: [for(var t in decks) DeckData.fromJson(t)]
-    );
-  }
-
-}
 class GlobalContainer{
   static HashMap<String, CardData> cards;
   static User user;
   static String authtoken;
+  static List<GameData> games=List<GameData>();
+  static IOWebSocketChannel channel;
+
 }
 String ip = "http://127.0.0.1:8000/";
 
@@ -120,9 +45,6 @@ Future<int> getPublicDecks() async{
   final response = await http.post(ip+"api/decks/",headers:headers,body: body);
   GlobalContainer.user.decks=[for(var deck in jsonDecode(response.body)) DeckData.fromJson(deck)];
   return response.statusCode;
-
-
-
 }
 Future<int> createDeck(DeckData data) async{
   Map<String, String> headers = {"Content-type": "application/json",HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"};
@@ -130,7 +52,6 @@ Future<int> createDeck(DeckData data) async{
   final response = await http.post(ip+"api/decks/",headers: headers,body: body);
   print(response.body);
   return response.statusCode;
-
 }
 Future<int> updateDeck(DeckData data) async{
   Map<String, String> headers = {"Content-type": "application/json",HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"};
@@ -141,18 +62,14 @@ Future<int> updateDeck(DeckData data) async{
   print(response.statusCode);
   print(response.body);
   return response.statusCode;
-
 }
-Future<int> createGame(GameData data) async {
-  Map<String, String> headers = {"Content-type": "application/json",HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"};
-  String body = jsonEncode(data);
 
-  final response = await http.post(ip+"api/games/",headers: headers,body: body);
-
-  return response.statusCode;
-
-
-
+void createGame(GameData data) async {
+  GlobalContainer.channel.sink.add(jsonEncode(data));
+  
+}
+void joinGame(GameData data) async {
+  GlobalContainer.channel.sink.add('{join:${data.name}')
 }
 
 

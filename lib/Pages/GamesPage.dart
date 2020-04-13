@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mtap/Game/Card.dart';
 
+import '../ObjectData.dart';
 import '../Requests.dart';
 class GameItem extends StatelessWidget{
-  final List<User> players;
-  final int totalPlayers;
-  final String name;
-  GameItem({this.players,this.totalPlayers,this.name});
+  final GameData data;
+  GameItem({this.data});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,6 +25,7 @@ class GamesPage extends StatefulWidget{
 
 }
 class GamesPageState extends State<GamesPage>{
+
   TextEditingController gameName=TextEditingController();
   bool gameCreateDisabled=false;
   Widget createGameWidget(){
@@ -72,6 +75,18 @@ class GamesPageState extends State<GamesPage>{
           )
         ],
 
+      ),
+      body: StreamBuilder(
+        stream: GlobalContainer.channel.stream,
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            var games = jsonDecode(snapshot.data);
+            return ListView(
+              children: [for(GameData game in games) GameItem()],
+            );
+          }
+          return CircularProgressIndicator();
+        },
       ),
     );
   }

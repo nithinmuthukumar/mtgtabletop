@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mtap/DeckBuilder/DeckBuilder.dart';
 import 'package:mtap/Requests.dart';
 
+import '../ObjectData.dart';
+
 
 class DecksPage extends StatefulWidget{
 

@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mtap/Pages/LoadPage.dart';
+import 'package:mtap/LoadPage.dart';
 
 import 'Pages/AccountPage.dart';
 import 'Pages/GamesPage.dart';

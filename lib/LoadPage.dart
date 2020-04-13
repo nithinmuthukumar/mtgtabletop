@@ -5,8 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../Requests.dart';
-import 'HomePage.dart';
+import 'ObjectData.dart';
+import 'Requests.dart';
+import 'Pages/HomePage.dart';
+import 'package:web_socket_channel/io.dart';
+
 HashMap<String,CardData> parseCardData(String str) {
   HashMap<String,CardData> cards=new HashMap();
 
@@ -93,6 +96,7 @@ class LoadState extends State<LoadPage>{
                     child: Text("Login"),
                     onPressed: (){
                       login(emailController.text, passwordController.text).then((value) {
+                            GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:6379");
 
                             Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(title:"Mtgback")));
                       });

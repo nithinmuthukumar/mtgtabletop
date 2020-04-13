@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mtap/Game/Card.dart';
 import 'package:mtap/Requests.dart';
 
+import '../ObjectData.dart';
+
 class Game extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
