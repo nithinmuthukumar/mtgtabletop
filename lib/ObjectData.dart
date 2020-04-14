@@ -54,11 +54,12 @@ class CardData{
 
   factory CardData.fromJson(var json) {
 
+
     return CardData(json['name'],json['image_uris'],-1);
   }
   factory CardData.fromDeck(var json,int deckId) {
-
-    return CardData(json['name'],GlobalContainer.cards[json['name']],deckId);
+    var card = GlobalContainer.cards[json['name']];
+    return CardData(card.name,card.imageURI,deckId);
   }
   Map toJson() => {
     'name': name,

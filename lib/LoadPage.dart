@@ -19,6 +19,7 @@ HashMap<String,CardData> parseCardData(String str) {
     var card = CardData.fromJson(cardData);
     cards[card.name] = card;
 
+
   }
   print("done");
   return cards;

@@ -25,7 +25,7 @@ class MagicCardState extends State<MagicCard>{
   @override
   void initState() {
     super.initState();
-    print(position);
+    print(widget.data);
 
     //position=widget.initPos;
 
