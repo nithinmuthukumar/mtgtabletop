@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mtap/Game/Card.dart';
 import 'package:mtap/Pages/DecksPage.dart';
 import 'package:mtap/Requests.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../ObjectData.dart';
+import 'Deck.dart';
 
 class Game extends StatefulWidget{
   @override
@@ -12,7 +13,7 @@ class Game extends StatefulWidget{
 
 }
 class GameState extends State<Game> {
-  List<CardData> deck;
+  List<CardData> deck = GlobalContainer.user.decks[0].cards;
   List<Widget> fieldCards;
   List<CardData> hand;
   FocusNode focus;
@@ -22,7 +23,9 @@ class GameState extends State<Game> {
         deck = List.from(GlobalContainer.user.decks[index].cards);
       });
 
+
       Navigator.of(context).pop();
+
     };
   }
   Widget deckSelect(){
@@ -47,110 +50,93 @@ class GameState extends State<Game> {
     super.initState();
 
     focus = FocusNode();
-
-
-
-
     fieldCards=List();
     hand= List();
 
   }
   void draw(){
-    print("draw");
-
     setState(() {
       CardData d=deck.removeAt(0);
-      print("y"+d.imageURI.toString());
       hand.add(d);
-
-
-
-
     });
-
   }
   void shuffle(){
 
   }
 
-
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(focus);
-    return RawKeyboardListener(
-      focusNode: focus,
-      onKey: (key){
-        print("pressed");
-        if(key.runtimeType.toString() == 'RawKeyUpEvent'){
-          if(key.data.keyLabel=='c'){
-            draw();
+
+    return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon:Icon(Icons.card_membership),
+            onPressed: (){
+              print("pressed");
+              showDialog(context: context,
+                  builder: (BuildContext context)=> deckSelect()
+              );
+            },
+          ),
+        ],
+      ),
+
+      body: RawKeyboardListener(
+        focusNode: focus,
+        onKey: (key){
+          if(key.runtimeType.toString() == 'RawKeyUpEvent'){
+            if(key.data.keyLabel=='c'){
+              draw();
+            }
           }
-        }
-      },
-      child: Scaffold(
-         body: Stack(
-          children:fieldCards+<Widget>[
-            Positioned(
-              child: Align(
-                alignment: FractionalOffset.bottomRight,
-                child: SizedBox(
-                  child: GameDeck(deck: deck),
-                  width: 20,
-                  height: 20,
+        },
+        child: Scaffold(
+           body: Stack(
+            children:fieldCards+<Widget>[
+              Positioned(
+                child: Align(
+                  alignment: FractionalOffset.bottomRight,
+                  child: SizedBox(
+                    child: Deck(deck: deck),
+                    width: 20,
+                    height: 20,
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              child: Align(
-                alignment: FractionalOffset.centerLeft,
-                child: Column(
-                  children: <Widget>[
-                    IconButton(
-                      icon:Icon(Icons.card_membership),
-                      onPressed: (){
-                        showDialog(context: context,
-                            builder: (BuildContext context)=> deckSelect()
-                        );
-                      },
+              Positioned(
+                left: 200,
+                bottom: 0,
+                width: 600,
+                height: 100,
 
-                    )
-                  ],
-                )
-              ),
-            ),
-            Positioned(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Row(
-                  children: [for(CardData v in hand) MagicCard(data: v,initPos: Offset.zero,)]
+                child: ReorderableListView(
+                  scrollDirection: Axis.horizontal,
+                  onReorder: (oldIndex, newIndex) {
+                    setState(() {
+                      // These two lines are workarounds for ReorderableListView problems
+                      if (newIndex > hand.length) newIndex = hand.length;
+                      if (oldIndex < newIndex) newIndex--;
+
+                      CardData item = hand[oldIndex];
+                      hand.remove(item);
+                      hand.insert(newIndex, item);
+                    });
+                  },
+                  children: [for(int i=0;i<hand.length;i++) CachedNetworkImage(key: ValueKey(i),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    imageUrl: deck[i].imageURI['png'],
+                    width: 100,
+                  )],
                 ),
-
-              ),
-            )
-          ]
+              )
+            ]
+           ),
          ),
-       ),
+      ),
     );
   }
 }
 
-class GameDeck extends StatefulWidget{
-  final List<CardData> deck;
 
-  const GameDeck({Key key, this.deck}) : super(key: key);
-  @override
-  State<StatefulWidget> createState() =>GameDeckState();
-
-
-}
-class GameDeckState extends State<GameDeck>{
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      //put card back image
-      child: Text(widget.deck!=null?widget.deck.length.toString():"null"),
-    );
-
-  }
-
-}

@@ -76,6 +76,7 @@ class _MyHomePageState extends State<HomePage> with SingleTickerProviderStateMix
             )
         ),
         child: TabBarView(
+
           controller: _tabController,
           children: <Widget>[
             GamesPage(),

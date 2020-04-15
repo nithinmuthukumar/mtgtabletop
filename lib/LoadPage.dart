@@ -10,6 +10,7 @@ import 'Requests.dart';
 import 'Pages/HomePage.dart';
 import 'package:web_socket_channel/io.dart';
 
+//parses card data from json String
 HashMap<String,CardData> parseCardData(String str) {
   HashMap<String,CardData> cards=new HashMap();
 
@@ -24,6 +25,7 @@ HashMap<String,CardData> parseCardData(String str) {
   print("done");
   return cards;
 }
+
 class LoadPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() =>LoadState();
@@ -48,6 +50,7 @@ class LoadState extends State<LoadPage>{
 
   }
   void setCardData(String s) async {
+    //asynchronously decodes json
     GlobalContainer.cards = await compute(parseCardData,s);
 
   }
@@ -86,8 +89,12 @@ class LoadState extends State<LoadPage>{
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'password',
-                      border: OutlineInputBorder()
+
+
+                      border: OutlineInputBorder(),
+
                     ),
+                    obscureText: true,
                     controller: passwordController,
 
 
