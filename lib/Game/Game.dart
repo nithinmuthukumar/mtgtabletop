@@ -6,7 +6,7 @@ import 'package:mtap/Requests.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../ObjectData.dart';
 import 'Deck.dart';
-
+import '../ReorderableListShortPress.dart';
 class Game extends StatefulWidget{
   @override
   State<StatefulWidget> createState() =>GameState();
@@ -56,6 +56,7 @@ class GameState extends State<Game> {
   }
   void draw(){
     setState(() {
+      print(hand);
       CardData d=deck.removeAt(0);
       hand.add(d);
     });
@@ -74,7 +75,6 @@ class GameState extends State<Game> {
           IconButton(
             icon:Icon(Icons.card_membership),
             onPressed: (){
-              print("pressed");
               showDialog(context: context,
                   builder: (BuildContext context)=> deckSelect()
               );
@@ -82,7 +82,6 @@ class GameState extends State<Game> {
           ),
         ],
       ),
-
       body: RawKeyboardListener(
         focusNode: focus,
         onKey: (key){
@@ -106,12 +105,14 @@ class GameState extends State<Game> {
                 ),
               ),
               Positioned(
-                left: 200,
+                left: 100,
                 bottom: 0,
-                width: 600,
-                height: 100,
+                height: 150,
+                right: 200,
 
-                child: ReorderableListView(
+
+                child: ReorderableListViewShortPress(
+
                   scrollDirection: Axis.horizontal,
                   onReorder: (oldIndex, newIndex) {
                     setState(() {
@@ -124,11 +125,27 @@ class GameState extends State<Game> {
                       hand.insert(newIndex, item);
                     });
                   },
-                  children: [for(int i=0;i<hand.length;i++) CachedNetworkImage(key: ValueKey(i),
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    imageUrl: deck[i].imageURI['png'],
-                    width: 100,
-                  )],
+                  children: [for(int i=0;i<hand.length;i++)
+                    GestureDetector(
+                      key: ValueKey(i),
+                      onVerticalDragStart: (detail){
+                        setState(() {
+
+                          fieldCards.add(MagicCard(data: hand.removeAt(i),initPos: detail.globalPosition));
+
+                        });
+                      },
+                      child: CachedNetworkImage(
+
+                        placeholder: (context, url) => CircularProgressIndicator(),
+
+                        height: 150,
+
+                        imageUrl: hand[i].imageURI['png'],
+
+                      ),
+                    )
+                  ],
                 ),
               )
             ]

@@ -19,15 +19,14 @@ class MagicCard extends StatefulWidget{
 }
 class MagicCardState extends State<MagicCard>{
 
-  Offset position = Offset(50,50);
+  Offset position;
 
 
   @override
   void initState() {
     super.initState();
-    print(widget.data);
 
-    //position=widget.initPos;
+    position=widget.initPos;
 
   }
 
