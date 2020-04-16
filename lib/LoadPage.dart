@@ -104,7 +104,6 @@ class LoadState extends State<LoadPage>{
                     child: Text("Login"),
                     onPressed: (){
                       login(emailController.text, passwordController.text).then((value) {
-                            //GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:6379");
 
                             Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(title:"Mtgback")));
                       });

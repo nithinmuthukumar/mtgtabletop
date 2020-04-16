@@ -61,7 +61,7 @@ class GamesPageState extends State<GamesPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(),
+        //leading: Container(),
 
         actions: <Widget>[
           FlatButton(

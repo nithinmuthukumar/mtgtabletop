@@ -30,14 +30,14 @@ Future<int> login(String email,String password) async{
   String body = jsonEncode({"password":password,'email':email});
   final response = await http.post(ip+"api/login/",headers:headers,body: body);
   var data=jsonDecode(response.body);
-  print(data);
   GlobalContainer.user=User.fromJson(data['user'],data['decks']);
-  print(data['decks']);
   GlobalContainer.authtoken=data['token'];
-
-
+  if(response.statusCode==200){
+    GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:8000/ws/chat/lobby/");
+  }
 
   return response.statusCode;
+
 }
 Future<int> getPublicDecks() async{
   Map<String, String> headers = {"Content-type": "application/json"};
