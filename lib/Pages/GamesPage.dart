@@ -69,27 +69,30 @@ class GamesPageState extends State<GamesPage>{
               "Create Game"
             ),
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Game()));
               showDialog(context: context,
                   builder: (BuildContext context)=> createGameWidget()
               );
+              //    Navigator.push(context, MaterialPageRoute(builder: (context) => Game()));
+
             },
+
           )
         ],
 
       ),
-//      body: StreamBuilder(
-//        stream: GlobalContainer.channel.stream,
-//        builder: (context, snapshot) {
-//          if(snapshot.hasData){
-//            var games = jsonDecode(snapshot.data);
-//            return ListView(
-//              children: [for(GameData game in games) GameItem()],
-//            );
-//          }
-//          return CircularProgressIndicator();
-//        },
-//      ),
+      body: StreamBuilder(
+        stream: GlobalContainer.channel.stream,
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            print(snapshot.data);
+            var games = [for(var v in jsonDecode(snapshot.data)) GameData.fromJson(v)];
+            return ListView(
+              children: [for(GameData game in games) GameItem()],
+            );
+          }
+          return CircularProgressIndicator();
+        },
+      ),
     );
   }
 

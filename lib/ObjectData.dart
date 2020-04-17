@@ -29,10 +29,10 @@ class GameData{
 
   GameData({this.name,this.players,this.size});
 
-  factory GameData.fromJson(Map<String, dynamic> json) {
+  factory GameData.fromJson(var json) {
     return GameData(
         name:json['name'],
-        players: json['players'],
+        players: json['players'] as List<String>,
         size: json['size']
 
     );

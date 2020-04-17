@@ -33,7 +33,7 @@ Future<int> login(String email,String password) async{
   GlobalContainer.user=User.fromJson(data['user'],data['decks']);
   GlobalContainer.authtoken=data['token'];
   if(response.statusCode==200){
-    GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:8000/ws/chat/lobby/");
+    GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:8000/ws/lobby/");
   }
 
   return response.statusCode;
