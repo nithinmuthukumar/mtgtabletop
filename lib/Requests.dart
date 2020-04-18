@@ -33,7 +33,7 @@ Future<int> login(String email,String password) async{
   GlobalContainer.user=User.fromJson(data['user'],data['decks']);
   GlobalContainer.authtoken=data['token'];
   if(response.statusCode==200){
-    GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:8000/ws/lobby/");
+    GlobalContainer.channel = IOWebSocketChannel.connect("ws://127.0.0.1:8000/ws/lobby/",headers:{HttpHeaders.authorizationHeader: "Token ${GlobalContainer.authtoken}"} );
   }
 
   return response.statusCode;
@@ -64,9 +64,9 @@ Future<int> updateDeck(DeckData data) async{
   return response.statusCode;
 }
 
-void createGame(GameData data) async {
-  GlobalContainer.channel.sink.add(jsonEncode(data));
-  
+void sendSocketMessage(dynamic data,String type){
+  GlobalContainer.channel.sink.add(jsonEncode({'data':data,'type':type}));
+
 }
 void joinGame(GameData data) async {
   GlobalContainer.channel.sink.add('{join:${data.name}');

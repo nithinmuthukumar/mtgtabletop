@@ -24,7 +24,7 @@ class DeckData {
 }
 class GameData{
   String name;
-  List<String> players;
+  List<User> players;
   int size;
 
   GameData({this.name,this.players,this.size});
@@ -32,12 +32,16 @@ class GameData{
   factory GameData.fromJson(var json) {
     return GameData(
         name:json['name'],
-        players: json['players'] as List<String>,
+        players: [for(var p in json['players']) User.fromJson(p, [])],
         size: json['size']
-
     );
   }
-
+  Map toJson() =>{
+    'name':name,
+    'players':players,
+    'size':size,
+    'format':1
+  };
 }
 class CardData{
   final String name;
@@ -86,5 +90,8 @@ class User {
         decks: [for(var t in decks) DeckData.fromJson(t)]
     );
   }
+  Map toJson()=>{
+    'name':name
+  };
 
 }

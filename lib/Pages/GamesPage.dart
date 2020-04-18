@@ -14,7 +14,11 @@ class GameItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("fhf"),
+      child: Row(
+          children: <Widget>[
+            Text(data.name)
+          ]
+      ),
     );
 
   }
@@ -45,8 +49,7 @@ class GamesPageState extends State<GamesPage>{
           onPressed: (){
             setState(() {
               var game = GameData(name: gameName.text,players: [],size: 6);
-              createGame(game);
-
+              sendSocketMessage(game,"create");
             });
             Navigator.of(context).pop();
 
@@ -87,7 +90,7 @@ class GamesPageState extends State<GamesPage>{
             print(snapshot.data);
             var games = [for(var v in jsonDecode(snapshot.data)) GameData.fromJson(v)];
             return ListView(
-              children: [for(GameData game in games) GameItem()],
+              children: [for(GameData game in games) GameItem(data: game,)],
             );
           }
           return CircularProgressIndicator();
